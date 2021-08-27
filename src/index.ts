@@ -1,6 +1,6 @@
-import * as pulumi from "@pulumi/pulumi";
-import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
+import * as pulumi from '@pulumi/pulumi'
+import * as aws from '@pulumi/aws'
+import * as awsx from '@pulumi/awsx'
 
 const awsConfig = new pulumi.Config('aws')
 const provider = new aws.Provider('devdigital', {
@@ -11,9 +11,17 @@ const provider = new aws.Provider('devdigital', {
 })
 
 // Create an AWS resource (S3 Bucket)
-const bucket = new aws.s3.Bucket("my-bucket", {}, {
-    provider,
-})
+const bucket = new aws.s3.Bucket(
+    'my-bucket',
+    {
+        acl: 'private',
+    },
+    {
+        provider,
+    }
+)
+
+bucket.onObjectCreated('convert-to-not-jif', () => {}, {}, { provider })
 
 // Export the name of the bucket
 export const bucketName = bucket.id
