@@ -165,7 +165,15 @@ const cdn = new aws.cloudfront.Distribution('jiffer', {
     priceClass: 'PriceClass_100',
     isIpv6Enabled: true,
     defaultCacheBehavior: {
-        allowedMethods: ['GET', 'HEAD', 'OPTIONS', 'PUT'],
+        allowedMethods: [
+            'HEAD',
+            'DELETE',
+            'POST',
+            'GET',
+            'OPTIONS',
+            'PUT',
+            'PATCH',
+        ],
         cachedMethods: ['GET', 'HEAD'],
         cachePolicyId: cachePolicy.id,
         originRequestPolicyId: originRequestPolicy.id,
