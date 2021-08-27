@@ -68,6 +68,24 @@ new aws.s3.BucketPolicy('notjiffer', {
                             },
                         ],
                     },
+                    {
+                        sid: 'AllowCfloudRuntUPLOADSTROLOLOL',
+                        actions: ['s3:PutObject'],
+                        resources: [bucketArn, `${bucketArn}/*`],
+                        principals: [
+                            {
+                                type: 'AWS',
+                                identifiers: [originAccessIdentityIamArn],
+                            },
+                        ],
+                        conditions: [
+                            {
+                                test: 'StringEquals',
+                                variable: 's3:x-amz-acl',
+                                values: ['bucket-owner-full-control'],
+                            },
+                        ],
+                    },
                 ],
             }),
         ).json,
