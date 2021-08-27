@@ -28,6 +28,9 @@ exports.handler = async (event) => {
         const tempFile = `/tmp/${filePath.replace('/', '_')}`
         const outputFile = `${tempFile}.webp`
 
+        const uploadArgs =
+            '--content-type "image/webp" --cache-control "public,must-revalidate"'
+
         if (!inputObject?.endsWith('.gif')) {
             console.error('file is not a gif!', { inputObject })
             return
@@ -38,10 +41,9 @@ exports.handler = async (event) => {
                 `ffmpeg -i "${tempFile}" -vcodec webp -loop 0 -pix_fmt yuv420p "${outputFile}"`,
                 { timeout: 12 },
             )
-            run(
-                `aws s3 cp "${outputFile}" "${outputObject}" --content-type "image/webp" --cache-control "public,must-revalidate"`,
-                { timeout: 4 },
-            )
+            run(`aws s3 cp "${outputFile}" "${outputObject}" ${uploadArgs}`, {
+                timeout: 4,
+            })
             run(`rm -f "${tempFile}" "${outputFile}"`, { timeout: 1 })
         } catch (err) {
             console.error('non-zero exit code!', { command, err })
