@@ -7,6 +7,9 @@ import { Certificate } from '@pulumi/aws/acm'
 
 const bucket = new aws.s3.Bucket('jifs', { acl: 'private', forceDestroy: true })
 
+const config = new pulumi.Config('ive-done-a-horrible-thing')
+const allowUploads = config.getBoolean('allow-uploads') ?? false
+
 new aws.s3.BucketOwnershipControls('jifs', {
     bucket: bucket.id,
     rule: {
@@ -68,24 +71,30 @@ new aws.s3.BucketPolicy('notjiffer', {
                             },
                         ],
                     },
-                    {
-                        sid: 'AllowCfloudRuntUPLOADSTROLOLOL',
-                        actions: ['s3:PutObject'],
-                        resources: [bucketArn, `${bucketArn}/*`],
-                        principals: [
-                            {
-                                type: 'AWS',
-                                identifiers: [originAccessIdentityIamArn],
-                            },
-                        ],
-                        conditions: [
-                            {
-                                test: 'StringEquals',
-                                variable: 's3:x-amz-acl',
-                                values: ['bucket-owner-full-control'],
-                            },
-                        ],
-                    },
+                    ...(allowUploads
+                        ? [
+                              {
+                                  sid: 'AllowCfloudRuntUPLOADSTROLOLOL',
+                                  actions: ['s3:PutObject'],
+                                  resources: [bucketArn, `${bucketArn}/*`],
+                                  principals: [
+                                      {
+                                          type: 'AWS',
+                                          identifiers: [
+                                              originAccessIdentityIamArn,
+                                          ],
+                                      },
+                                  ],
+                                  conditions: [
+                                      {
+                                          test: 'StringEquals',
+                                          variable: 's3:x-amz-acl',
+                                          values: ['bucket-owner-full-control'],
+                                      },
+                                  ],
+                              },
+                          ]
+                        : []),
                 ],
             }),
         ).json,
@@ -190,15 +199,9 @@ const cdn = new aws.cloudfront.Distribution('jiffer', {
     priceClass: 'PriceClass_100',
     isIpv6Enabled: true,
     defaultCacheBehavior: {
-        allowedMethods: [
-            'HEAD',
-            'DELETE',
-            'POST',
-            'GET',
-            'OPTIONS',
-            'PUT',
-            'PATCH',
-        ],
+        allowedMethods: allowUploads
+            ? ['HEAD', 'DELETE', 'POST', 'GET', 'OPTIONS', 'PUT', 'PATCH']
+            : ['GET', 'HEAD', 'OPTIONS'],
         cachedMethods: ['GET', 'HEAD'],
         cachePolicyId: cachePolicy.id,
         originRequestPolicyId: originRequestPolicy.id,
