@@ -2,6 +2,7 @@
   "name": "degiffer",
   "devDependencies": {
     "@types/node": "^10.0.0",
+    "@wanews/pulumi-certificate-validation": "^0.4.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.3.2"

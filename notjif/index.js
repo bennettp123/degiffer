@@ -20,12 +20,12 @@ exports.handler = async (event) => {
     }
 
     for (const record of event.Records) {
-        const fileName = record.s3.object.key
+        const filePath = record.s3.object.key
         const bucketName = record.s3.bucket.name
 
-        const inputObject = `s3://${bucketName}/${fileName}`
+        const inputObject = `s3://${bucketName}/${filePath}`
         const outputObject = `${inputObject}.webp`
-        const tempFile = `/tmp/${fileName.replace('/', '_')}`
+        const tempFile = `/tmp/${filePath.replace('/', '_')}`
         const outputFile = `${tempFile}.webp`
 
         if (!inputObject?.endsWith('.gif')) {
