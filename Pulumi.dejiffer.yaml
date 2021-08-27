@@ -1,0 +1,4 @@
+secretsprovider: awskms://alias/pulumi-homestuff?region=ap-southeast-2
+encryptedkey: AQICAHgZ2mNDZiRGqJOc1Q1668gBs4w7h00qjlIAmNx9ypYsCwGnRdtE06Or3jxEAIDAmO50AAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM7BkFeaqtQVsnCE/PAgEQgDumFOsfaR8mz/So71EYlBOz1DC40FUcgL5Ekn2W6lq9iACJK6kdXynpcXM2lf8IasnjVfqzM2RmVtKhhQ==
+config:
+  aws:region: us-west-2
