@@ -7,6 +7,13 @@ import { Certificate } from '@pulumi/aws/acm'
 
 const bucket = new aws.s3.Bucket('jifs', { acl: 'private', forceDestroy: true })
 
+new aws.s3.BucketOwnershipControls('jifs', {
+    bucket: bucket.id,
+    rule: {
+        objectOwnership: 'BucketOwnerPreferred',
+    },
+})
+
 const usEast1 = new aws.Provider('us-east-1', {
     region: 'us-east-1',
 })
