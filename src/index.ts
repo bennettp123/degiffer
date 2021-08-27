@@ -61,7 +61,7 @@ const uploadHandler = new aws.lambda.Function('not-jiff', {
     packageType: 'Image',
     imageUri: image.imageValue,
     role: role.arn,
-    timeout: 900,
+    timeout: 24,
     memorySize: 8192,
 })
 
