@@ -110,14 +110,6 @@ const uploadHandler = new aws.lambda.Function(
     { provider },
 )
 
-/*
-const uploadHandler: aws.s3.BucketEventHandler = (event) => {
-    const records = event.Records ?? []
-    for (const record of records) {
-        console.debug(record)
-    }
-} */
-
 bucket.onObjectCreated(
     'convert-to-not-jif',
     uploadHandler,
