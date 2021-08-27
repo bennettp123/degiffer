@@ -10,7 +10,11 @@ const provider = new aws.Provider('devdigital', {
     },
 })
 
-const bucket = new aws.s3.Bucket('jifs', { acl: 'private' }, { provider })
+const bucket = new aws.s3.Bucket(
+    'jifs',
+    { acl: 'private', forceDestroy: true },
+    { provider },
+)
 
 const image = awsx.ecr.buildAndPushImage(
     'not-jiff',
