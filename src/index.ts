@@ -18,10 +18,22 @@ const bucket = new aws.s3.Bucket(
     },
     {
         provider,
-    }
+    },
 )
 
-bucket.onObjectCreated('convert-to-not-jif', () => {}, {}, { provider })
+const uploadHandler: aws.s3.BucketEventHandler = (event) => {
+    const records = event.Records ?? []
+    for (const record of records) {
+        console.debug(record)
+    }
+}
+
+bucket.onObjectCreated(
+    'convert-to-not-jif',
+    uploadHandler,
+    { event: '*' },
+    { provider },
+)
 
 // Export the name of the bucket
 export const bucketName = bucket.id
