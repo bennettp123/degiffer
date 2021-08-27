@@ -15,7 +15,7 @@ function run(command, { timeout }) {
 exports.handler = async (event) => {
     console.log('notjiffer handler called')
 
-    if (!event.Records) {
+    if (!event?.Records) {
         return
     }
 
