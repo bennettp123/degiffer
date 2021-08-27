@@ -31,10 +31,11 @@ exports.handler = async (event) => {
         const uploadArgs =
             '--content-type "image/webp" --cache-control "public,must-revalidate"'
 
-        if (!inputObject?.endsWith('.gif')) {
-            console.error('file is not a gif!', { inputObject })
+        if (inputObject?.endsWith('.webp')) {
+            console.error('file is already a webp, ignoring', { inputObject })
             return
         }
+
         try {
             run(`aws s3 cp "${inputObject}" "${tempFile}"`, { timeout: 4 })
             run(
