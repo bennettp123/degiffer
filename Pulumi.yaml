@@ -1,0 +1,6 @@
+name: degiffer
+runtime: nodejs
+description: Convert a gif into not a gif
+backend:
+  url: 's3://pulumi-state.swmdigital.io'
+
